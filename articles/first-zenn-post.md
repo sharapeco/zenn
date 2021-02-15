@@ -3,7 +3,7 @@ title: "Zenn を使ってみた感想"
 emoji: "🐤"
 type: "idea" # tech: 技術記事 / idea: アイデア
 topics: ["zenn"]
-published: false
+published: true
 ---
 
 2021年2月3日、春になったので Zenn を使ってみた。
