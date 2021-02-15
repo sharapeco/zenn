@@ -40,9 +40,9 @@ git push -u origin main
 記事を作ったりブラウザでプレビューしたり。プレビューはファイルを更新すると即座に反応されるので非常に具合がよい。
 
 ```
-zenn new:article
-zenn new:article --slug 記事のスラッグ
-zenn preview
+npx zenn new:article
+npx zenn new:article --slug 記事のスラッグ
+npx zenn preview
 ```
 
 オプション `--slug` を指定することでファイル名 (URL) を任意に指定できる。Slug に指定できるのは `/^[0-9a-z-]{12,50}$/` で結構難しい。
