@@ -76,6 +76,16 @@ components/pages/ApplyForm.vue
 components/pages/ApplyIndex.vue
 ```
 
+## ファイル名の OR 条件で検索
+
+正規表現が使えるので `|` を使用すればよい。
+
+```sh
+% fd 'copy|preview'
+src\css\public\sections\preview.styl
+tasks\copy.js
+```
+
 ## 拡張子で検索
 
 `-e ext` を指定すると拡張子で検索できる。`.` は不要。複数指定すると OR 検索になる。
@@ -116,7 +126,9 @@ common/views/sitemap.xml
 
 ## 検索結果に対してプログラムを実行する
 
-`-x` に続けてコマンドを記述する。それぞれのファイルに対して処理される。
+`-x` に続けてコマンドを記述する。
+
+後述のプレースホルダを記述しなかった場合は、コマンドの最後に引数として検索結果が追加される。
 
 ```sh
 % fd -e html map -x wc -l
@@ -124,3 +136,17 @@ common/views/sitemap.xml
 6 public/views/partials/require_google_maps.html
 1 common/views/partials/use_google_maps.html
 ```
+
+便利なプレースホルダを使って ImageMagick で形式を変換する例。
+
+```sh
+% fd -e png -x convert {} {.}.jpg
+```
+
+プレースホルダは次のものが使用できる。
+
+- `{}`: 検索結果のパスそのまま (documents/images/party.jpg)
+- `{.}`: 拡張子を除いたもの (documents/images/party)
+- `{/}`: ファイル名 (basename) のみ (party.jpg)
+- `{//}`: 親ディレクトリ (documents/images)
+- `{/.}`: 拡張子を除いたファイル名 (basename) のみ (party)
