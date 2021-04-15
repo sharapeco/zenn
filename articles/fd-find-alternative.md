@@ -137,7 +137,7 @@ common/views/sitemap.xml
 1 common/views/partials/use_google_maps.html
 ```
 
-便利なプレースホルダを使って ImageMagick で形式を変換する例。
+便利なプレースホルダを使って ImageMagick で形式を変換する例。こうすると `convert image.png image.jpg` のようにコマンドを実行できる。
 
 ```sh
 % fd -e png -x convert {} {.}.jpg
