@@ -178,6 +178,10 @@ $ fd -e png -x convert {} {.}.jpg
 
 `--changed-within` や `--changed-before` に続けて日時や期間を指定する。
 
+期間の指定に使える単位には、年 `y` `year`、月 `month`、週 `w` `week`、日 `d` `day`、時間 `h` `hour`、分 `m` `min` `minute`、秒 `s` `sec` `second` がある。
+
+日時は `YYYY-MM-DD HH:MM:SS` 形式で記述し、ローカル時間ではなく UTC で指定する必要があることに注意。
+
 例： 3時間以内に変更されたファイルを検索する
 
 ```shell-session
@@ -201,5 +205,3 @@ $ fd --changed-within '2020-05-09 00:00:00'
 ```shell-session
 $ fd --changed-within '2020-05-09 00:00:00' --changed-before '2020-05-12 20:00:00'
 ```
-
-日時はローカル時間ではなく UTC で指定する必要があることに注意。
