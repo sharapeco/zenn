@@ -32,7 +32,7 @@ GNU find を使ってファイルを探すのにパラメータの指定に嫌�
 
 `dpkg` を用いてインストールする。
 
-```sh
+```shell-session
 wget https://github.com/sharkdp/fd/releases/download/v8.2.1/fd_8.2.1_amd64.deb
 sudo dpkg -i fd_8.2.1_amd64.deb
 ```
@@ -41,7 +41,7 @@ sudo dpkg -i fd_8.2.1_amd64.deb
 
 Scoop もしくは Chocolatey を使ってインストールできる。
 
-```sh
+```shell-session
 scoop install fd
 ```
 
@@ -51,8 +51,8 @@ scoop install fd
 
 `fd` に続けてパターンを指定するとファイル名・ディレクトリ名で検索できる。
 
-```sh
-% fd pon
+```shell-session
+$ fd pon
 components
 img/pon.svg
 ```
@@ -61,15 +61,15 @@ img/pon.svg
 
 GNU find と違い `fd pattern... directory` のようにパターンとディレクトリが逆順になる。
 
-```sh
-% fd pon img
+```shell-session
+$ fd pon img
 img/pon.svg
 ```
 
 ## デフォルトで正規表現が使える
 
-```sh
-% fd '^a.*e$'
+```shell-session
+$ fd '^a.*e$'
 App.vue
 components/pages/ApplyDone.vue
 components/pages/ApplyForm.vue
@@ -80,8 +80,8 @@ components/pages/ApplyIndex.vue
 
 正規表現が使えるので `|` を使用すればよい。
 
-```sh
-% fd 'copy|preview'
+```shell-session
+$ fd 'copy|preview'
 src\css\public\sections\preview.styl
 tasks\copy.js
 ```
@@ -90,8 +90,8 @@ tasks\copy.js
 
 `-e ext` を指定すると拡張子で検索できる。`.` は不要。複数指定すると OR 検索になる。
 
-```sh
-% fd -e js -e vue
+```shell-session
+$ fd -e js -e vue
 App.vue
 ajaxzip.js
 api.js
@@ -102,8 +102,8 @@ api.js
 
 単純にそれぞれを順不同で並べる。下記の例では `fd map -e xml` としてもよい。
 
-```sh
-% fd -e xml map
+```shell-session
+$ fd -e xml map
 common/views/sitemap.xml
 ```
 
@@ -111,8 +111,8 @@ common/views/sitemap.xml
 
 `-E pattern` で特定のファイルやディレクトリを除外できる。
 
-```sh
-% fd map -E vendor
+```shell-session
+$ fd map -E vendor
 common/supports/SitemapBase.php
 common/views/partials/use_google_maps.html
 common/views/sitemap.xml
@@ -120,8 +120,8 @@ common/views/sitemap.xml
 
 ここは正規表現ではなく glob 形式となっている。
 
-```sh
-% fd map -E '*.bak'
+```shell-session
+$ fd map -E '*.bak'
 ```
 
 ## 検索結果に対してプログラムを実行する
@@ -130,8 +130,8 @@ common/views/sitemap.xml
 
 後述のプレースホルダを記述しなかった場合は、コマンドの最後に引数として検索結果が追加される。
 
-```sh
-% fd -e html map -x wc -l
+```shell-session
+$ fd -e html map -x wc -l
 49 public/views/sitemap.html
 6 public/views/partials/require_google_maps.html
 1 common/views/partials/use_google_maps.html
@@ -139,9 +139,9 @@ common/views/sitemap.xml
 
 便利なプレースホルダを使って ImageMagick で形式を変換する例。
 
-```sh
-% fd -e png -x convert {} {.}.jpg
-# => convert image.png image.jpg のように展開される
+```shell-session
+$ fd -e png -x convert {} {.}.jpg
+==> convert image.png image.jpg のように展開される
 ```
 
 プレースホルダは次のものが使用できる。
