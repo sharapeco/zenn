@@ -269,7 +269,7 @@ WACS は Web サーバが IIS であれば IIS の設定までしてくれるよ
 
 ```
 <VirtualHost *:443>
-	ServerName torir.suzume.dev
+	ServerName test.suzume.dev
 	
 	SSLEngine on
 	SSLProtocol +TLSv1.2
