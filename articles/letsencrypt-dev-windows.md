@@ -12,7 +12,9 @@ published: true
 
 - [ローカル開発環境の https 化 | blog.jxck.io](https://blog.jxck.io/entries/2020-06-29/https-for-localhost.html)
 
-今回はこれを Windows 10 で行う。
+今回はこれを Windows 10 ネイティブ環境（WSL を使わず）で、証明書発行クライアント Windows ACME Simple (WACS) を使用して行う。
+
+ここで使用した WACS のバージョンは 2.1.17.1065 (release, trimmed, standalone, 64-bit) である。
 
 # 準備
 
@@ -26,7 +28,7 @@ test.suzume.dev. 10800 IN A 127.0.0.1
 
 ## 証明書発行クライアントのインストール
 
-Windows 用の証明書発行クライアントとして Windows ACME Simple (WACS) を使用する。
+証明書発行クライアント WACS は次のリンクから入手できる。
 
 - [win-acme/win-acme: A simple ACME client for Windows (for use with Let's Encrypt et al.)](https://github.com/win-acme/win-acme)
 
