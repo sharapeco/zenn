@@ -328,7 +328,7 @@ WSL にいちいち切り替えるのが面倒なので PowerShell から certbo
 
 次に PowerShell のプロファイル (`$Home\Documents\PowerShell\Microsoft.PowerShell_profile.ps1`) に certbot を使うための設定を記述する。
 
-```shell-session
+```powershell
 # certbot では Windows ファイルシステムのパスを指定することはないが、
 # 共通で使用しているので書いておく
 function Convert-Windows-Path-To-WSL {
