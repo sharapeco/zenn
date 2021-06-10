@@ -2,11 +2,13 @@
 title: "Let’s Encrypt 証明書を Windows 10 のローカル開発環境で発行する"
 emoji: "🔐"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: ["ssl", "letsencrypt"]
+topics: ["ssl", "letsencrypt", "certbot"]
 published: true
 ---
 
 # まえがき
+
+[2021-06-10] やっぱり WSL 上の certbot でやるほうが楽なので、その方法を追記しました。
 
 ローカル開発環境でも HTTPS が必要になり調べていたら、「本物の」証明書を使って HTTPS 化するという方法を見つけた。
 
@@ -294,5 +296,76 @@ server {
 	ssl_certificate_key C:/path/to/certs/test.suzume.dev/test.suzume.dev-key.pem;
 
 	# ...
+}
+```
+
+# 別の方法： WSL 上の certbot を使う
+
+ここまでと同様の内容を macOS 上の certbot でやってみたら選択項目が少なくて簡単だったので、 Windows でも certbot を使ってやってみることにした。
+
+## certbot のインストール
+
+WSL で動かしている Ubuntu 18.04 にインストールできる certbot は古い（2018年9月リリース）ようだが証明書の発行は問題なく行えた。
+
+```shell-session
+% sudo apt install certbot
+% certbot --version
+certbot 0.27.0
+```
+
+## PowerShell の設定
+
+WSL にいちいち切り替えるのが面倒なので PowerShell から certbot を使えるよう設定する。
+
+まず WSL で certbot の作業ディレクトリを用意する。これは certbot を動かすのに root 権限が必要だが、 WSL から sudo するのが不安なのでこうしている。気にしなければ行わなくてもよい。
+
+```shell-session
+% mkdir -p ~/etc/letsencrypt
+% cp /etc/letsencrypt/cli.ini ~/etc/letsencrypt
+% mkdir -p ~/var/lib/letsencrypt
+% mkdir -p ~/var/log/letsencrypt
+```
+
+次に PowerShell のプロファイル (`$Home\Documents\PowerShell\Microsoft.PowerShell_profile.ps1`) に certbot を使うための設定を記述する。
+
+```shell-session
+# certbot では Windows ファイルシステムのパスを指定することはないが、
+# 共通で使用しているので書いておく
+function Convert-Windows-Path-To-WSL {
+	$args | % {
+		if ($_ -is [string]) {
+			# C ドライブ以外も必要であれば追記する
+			return $_.Replace('\', '/').Replace('C:/', '/mnt/c/')
+		} else {
+			return $_
+		}
+	}
+}
+
+# バージョンやヘルプを見るための alias
+function certbot {
+	wsl certbot $(Convert-Windows-Path-To-WSL @args)
+}
+
+# certbot-create domain.example.com を実行するだけでいいがにしてくれる
+function certbot-create {
+	[CmdletBinding()]
+	param (
+		[string]$domain
+	)
+
+	wsl certbot certonly `
+	  --manual `
+	  --domain $domain `
+	  --preferred-challenges dns `
+	  --work-dir ~/var/lib/letsencrypt `
+	  --logs-dir ~/var/log/letsencrypt `
+	  --config-dir ~/etc/letsencrypt
+
+	# できあがった証明書を Windows ファイルシステムにコピーする。
+	# 書きやすいので fd を使ったが、なければ find を使う
+	wsl fd $domain ~/etc/letsencrypt/live `
+	  --type d `
+	  --exec cp -RL '{}' /mnt/c/Server/certs/
 }
 ```
