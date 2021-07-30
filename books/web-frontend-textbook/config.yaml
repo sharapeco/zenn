@@ -1,0 +1,9 @@
+title: "Web開発者になろう（フロントエンド編）"
+summary: "Web開発に必要な知識の解説と演習問題"
+topics: ["html", "css", "javascript"]
+published: false
+price: 200 # 有料の場合200〜5000
+# 本に含めるチャプターを順番に並べましょう
+chapters:
+  - chapter1
+  - chapter2
