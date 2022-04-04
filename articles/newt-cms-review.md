@@ -85,10 +85,6 @@ Freeプランの制限は次の通り。
 
 少しトリッキーだが、「カスタムフィールドタイプ」を「マルチタイプ」と組み合わせることで、ページ内のみで使用する繰り返し項目を表現することができる。
 
-- [Kuroco](https://kuroco.app/ja/) ではスキーマ設定（コンテンツ定義）がもっと分かりにくい
-- [microCMS](https://microcms.io/) では表現できない
-- [GraphCMS](https://graphcms.com/) では素直に表現できる
-
 ![](/images/newt-repeat-sections.png)
 
 # ビュー
