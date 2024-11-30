@@ -175,3 +175,13 @@ source
 	)
 	.pipe(destination);
 ```
+
+# プラグインを置き換える
+
+最後に `rollup-plugin-image` をimportする部分を作成したプラグインに置き換える。
+
+`rollup.config.js`:
+
+```js
+import image from "./rollup/image-with-pngquant.js";
+```
