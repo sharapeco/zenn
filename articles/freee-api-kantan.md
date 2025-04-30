@@ -54,49 +54,49 @@ import { createLocalStorage } from "localstorage-ponyfill";
 const localStorage = createLocalStorage();
 
 async function main(token: string) {
-	// やりたい処理
-	...
+  // やりたい処理
+  ...
 }
 
 // プロンプトを表示し、ユーザから入力を受け付ける
 function question(prompt: string): Promise<string> {
-	const rl = readline.createInterface({
-		input: process.stdin,
-		output: process.stdout,
-	});
-	return new Promise((resolve) => {
-		rl.question(prompt, (input) => {
-			rl.close();
-			resolve(input);
-		});
-	});
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+  return new Promise((resolve) => {
+    rl.question(prompt, (input) => {
+      rl.close();
+      resolve(input);
+    });
+  });
 }
 
 let getAccessToken = localStorage.getItem("getAccessToken");
 if (getAccessToken == null) {
-	getAccessToken = await question("アクセストークン取得ページのURL: ");
-	localStorage.setItem("getAccessToken", getAccessToken);
+  getAccessToken = await question("アクセストークン取得ページのURL: ");
+  localStorage.setItem("getAccessToken", getAccessToken);
 }
 
 let succeeded = false;
 while (!succeeded) {
-	try {
-		const token = localStorage.getItem("token");
-		if (token == null) {
-			throw new Error("invalid_access_token");
-		}
-		await main(token);
-		succeeded = true;
-	} catch (e) {
-		if (e instanceof Error && /\b(?:invalid|expired)_access_token\b/.test(e.message)) {
-			console.log("アクセストークン取得ページからアクセストークンを取得してください");
-			console.log(getAccessToken);
-			const token = await question("アクセストークン: ");
-			localStorage.setItem("token", token);
-		} else {
-			console.error(e);
-			break;
-		}
-	}
+  try {
+    const token = localStorage.getItem("token");
+    if (token == null) {
+      throw new Error("invalid_access_token");
+    }
+    await main(token);
+    succeeded = true;
+  } catch (e) {
+    if (e instanceof Error && /\b(?:invalid|expired)_access_token\b/.test(e.message)) {
+      console.log("アクセストークン取得ページからアクセストークンを取得してください");
+      console.log(getAccessToken);
+      const token = await question("アクセストークン: ");
+      localStorage.setItem("token", token);
+    } else {
+      console.error(e);
+      break;
+    }
+  }
 }
 ```

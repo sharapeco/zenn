@@ -122,8 +122,8 @@ FileETag None
 
 ```
 <Directory /path/to/www/assets>
-	# 既存の設定に加え FileInfo と Indexes を追加
-	AllowOverride FileInfo Options AuthConfig Indexes
+    # 既存の設定に加え FileInfo と Indexes を追加
+    AllowOverride FileInfo Options AuthConfig Indexes
 </Directory>
 ```
 
@@ -131,8 +131,8 @@ AllowOverride ディレクティブは、次のようにワイルドカードを
 
 ```
 <Directory "/path/to/www/assets-*">
-	# 既存の設定に加え Indexes を追加
-	AllowOverride FileInfo Options AuthConfig Indexes
+    # 既存の設定に加え Indexes を追加
+    AllowOverride FileInfo Options AuthConfig Indexes
 </Directory>
 ```
 

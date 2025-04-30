@@ -54,8 +54,8 @@ Pngquantを読み込み、オプションを格納する定数を用意してお
 import PngQuant from "pngquant";
 
 const pngOptions = {
-	speed: 1,
-	quality: "65-80",
+  speed: 1,
+  quality: "65-80",
 };
 ```
 
@@ -67,30 +67,30 @@ Pngquantを使うためにはストリームを使い、非同期処理にする
 
 ```js
 export default function image(opts = {}) {
-	const options = Object.assign({}, defaults, opts);
-	const filter = createFilter(options.include, options.exclude);
+  const options = Object.assign({}, defaults, opts);
+  const filter = createFilter(options.include, options.exclude);
 
-	return {
-		name: "image",
+  return {
+    name: "image",
 
-		load(id) {
-			return new Promise((resolve, reject) => {
-				if (!filter(id)) {
-					return resolve(null);
-				}
+    load(id) {
+      return new Promise((resolve, reject) => {
+        if (!filter(id)) {
+          return resolve(null);
+        }
 
-				const mime = mimeTypes[extname(id)];
-				if (!mime) {
-					// not an image
-					return resolve(null);
-				}
+        const mime = mimeTypes[extname(id)];
+        if (!mime) {
+          // not an image
+          return resolve(null);
+        }
 
-				...
+        ...
 
-				resolve(code.trim());
-			});
-		},
-	};
+        resolve(code.trim());
+      });
+    },
+  };
 }
 ```
 
@@ -109,19 +109,19 @@ export default function image(opts = {}) {
 import { Stream } from "node:stream";
 
 class BufferStream extends Stream.Writable {
-	constructor() {
-		super();
-		this._buffers = [];
-	}
+  constructor() {
+    super();
+    this._buffers = [];
+  }
 
-	_write(chunk, encoding, callback) {
-		this._buffers.push(chunk);
-		callback();
-	}
+  _write(chunk, encoding, callback) {
+    this._buffers.push(chunk);
+    callback();
+  }
 
-	get buffer() {
-		return Buffer.concat(this._buffers);
-	}
+  get buffer() {
+    return Buffer.concat(this._buffers);
+  }
 }
 ```
 
@@ -130,7 +130,7 @@ class BufferStream extends Stream.Writable {
 ```js
 const destination = new BufferStream();
 destination.on("finish", () => {
-	console.log(destination.buffer);
+  console.log(destination.buffer);
 });
 source.pipe(destination);
 ```
@@ -146,34 +146,34 @@ const source = createReadStream(id);
 const destination = new BufferStream();
 
 destination.on("finish", () => {
-	const dataUri = getDataUri({
-		format: "base64"
-		isSvg: false,
-		mime,
-		buffer: destination.buffer.toString("base64"),
-	});
-	const code = options.dom
-		? domTemplate({ dataUri })
-		: constTemplate({ dataUri });
-	resolve(code.trim());
+  const dataUri = getDataUri({
+    format: "base64"
+    isSvg: false,
+    mime,
+    buffer: destination.buffer.toString("base64"),
+  });
+  const code = options.dom
+    ? domTemplate({ dataUri })
+    : constTemplate({ dataUri });
+  resolve(code.trim());
 });
 
 destination.on("error", (err) => {
-	reject(err);
+  reject(err);
 });
 
 source
-	.pipe(
-		new PngQuant([
-			"--speed",
-			pngOptions.speed,
-			"--quality",
-			pngOptions.quality,
-			"--nofs",
-			"-",
-		]),
-	)
-	.pipe(destination);
+  .pipe(
+    new PngQuant([
+      "--speed",
+      pngOptions.speed,
+      "--quality",
+      pngOptions.quality,
+      "--nofs",
+      "-",
+    ]),
+  )
+  .pipe(destination);
 ```
 
 # プラグインを置き換える

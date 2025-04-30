@@ -18,14 +18,14 @@ published: true
 
 - bash
 - expect
-	- 対話型のコマンドラインプログラムを自動操作するためのツール
-	- とっても詳しくて役に立つ：[Tclの使い方 - Qiita](https://qiita.com/hana_shin/items/ebd7339da657d5b376dd)
+  - 対話型のコマンドラインプログラムを自動操作するためのツール
+  - とっても詳しくて役に立つ：[Tclの使い方 - Qiita](https://qiita.com/hana_shin/items/ebd7339da657d5b376dd)
 - [fd](https://github.com/sharkdp/fd)
-	- 以前に書いた紹介：[高速で記述が簡単な find コマンドの代替「fd」](https://zenn.dev/21f/articles/fd-find-alternative)
+  - 以前に書いた紹介：[高速で記述が簡単な find コマンドの代替「fd」](https://zenn.dev/21f/articles/fd-find-alternative)
 - PHP
-	- シェルスクリプトでは書きにくい処理をするために使用。書きやすければ他のツールでも可
+  - シェルスクリプトでは書きにくい処理をするために使用。書きやすければ他のツールでも可
 - ssh, scp
-	- 標準で入っていると思う
+  - 標準で入っていると思う
 
 # 処理の流れ
 
@@ -90,72 +90,72 @@ exit(main($argv));
 
 function main(array $argv): int
 {
-	$period = filterFdPeriod($argv[1] ?? '');
-	if (!$period) {
-		echo "Usage: ./transfer/run.sh <interval>\n";
-		return 1;
-	}
+  $period = filterFdPeriod($argv[1] ?? '');
+  if (!$period) {
+    echo "Usage: ./transfer/run.sh <interval>\n";
+    return 1;
+  }
 
-	$files = array_merge(
-		// 除外ファイルがあれば -E オプションを追加する
-		getLines("fd . --type file -E '/tests/**' --changed-within {$period}"),
-		// .gitignore で除外しているディレクトリがあればこのように書く
-		getLines("fd . vendor/ --type file --changed-within {$period}")
-	);
+  $files = array_merge(
+    // 除外ファイルがあれば -E オプションを追加する
+    getLines("fd . --type file -E '/tests/**' --changed-within {$period}"),
+    // .gitignore で除外しているディレクトリがあればこのように書く
+    getLines("fd . vendor/ --type file --changed-within {$period}")
+  );
 
-	$commands = [];
-	$dirsCreated = [];
-	foreach ($files as $file) {
-		// サーバとパスが違うところは変換する
-		$file = convertPath($file);
+  $commands = [];
+  $dirsCreated = [];
+  foreach ($files as $file) {
+    // サーバとパスが違うところは変換する
+    $file = convertPath($file);
 
-		// ディレクトリを浅い順に作成する
-		$dirs = [];
-		$dir = dirname($file);
-		while ($dir !== '.' && $dir !== '') {
-			$dirs[] = $dir;
-			$dir = dirname($dir);
-		}
-		foreach (array_reverse($dirs) as $dir) {
-			if (!array_key_exists($dir, $dirsCreated)) {
-				$commands[] = "mkdir {$dir}";
-			}
-		}
+    // ディレクトリを浅い順に作成する
+    $dirs = [];
+    $dir = dirname($file);
+    while ($dir !== '.' && $dir !== '') {
+      $dirs[] = $dir;
+      $dir = dirname($dir);
+    }
+    foreach (array_reverse($dirs) as $dir) {
+      if (!array_key_exists($dir, $dirsCreated)) {
+        $commands[] = "mkdir {$dir}";
+      }
+    }
 
-		$commands[] = "put {$file}";
-	}
+    $commands[] = "put {$file}";
+  }
 
-	file_put_contents(__DIR__ . '/updates.txt', implode("\n", $commands), LOCK_EX);
+  file_put_contents(__DIR__ . '/updates.txt', implode("\n", $commands), LOCK_EX);
 
-	return 0;
+  return 0;
 }
 
 function convertPath(string $file): string
 {
-	// 先頭に ./ がついている場合は取り除く
-	$file = preg_replace('#^\./#', '', $file);
+  // 先頭に ./ がついている場合は取り除く
+  $file = preg_replace('#^\./#', '', $file);
 
-	// html → public_html
-	$file = preg_replace('#^html/#', 'public_html/', $file);
+  // html → public_html
+  $file = preg_replace('#^html/#', 'public_html/', $file);
 
-	return $file;
+  return $file;
 }
 
 function filterFdPeriod(string $val): ?string
 {
-	if (preg_match('/\\A[1-9][0-9]*(?:y|year|month|w|week|d|day|h|hour|m|min|minute|s|sec|second)\\z/', $val)) {
-		return $val;
-	}
-	return null;
+  if (preg_match('/\\A[1-9][0-9]*(?:y|year|month|w|week|d|day|h|hour|m|min|minute|s|sec|second)\\z/', $val)) {
+    return $val;
+  }
+  return null;
 }
 
 function getLines(string $command): array
 {
-	exec($command, $output, $result);
-	if ($result !== 0) {
-		throw new RuntimeException(implode("\n", $output));
-	}
-	return array_values(array_filter($output, fn ($line) => trim($line) !== ''));
+  exec($command, $output, $result);
+  if ($result !== 0) {
+    throw new RuntimeException(implode("\n", $output));
+  }
+  return array_values(array_filter($output, fn ($line) => trim($line) !== ''));
 }
 ```
 
@@ -181,9 +181,9 @@ send "PASSWORD\r"
 set fp [open "transfer/updates.txt"]
 
 while {! [eof $fp]} {
-	expect "ftp>"
-	gets $fp command
-	send "$command\r"
+  expect "ftp>"
+  gets $fp command
+  send "$command\r"
 }
 
 close $fp
